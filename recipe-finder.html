@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder - FET | Food Expiry Tracker</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- LOAD IN THIS ORDER -->
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/recipe-finder.js"></script>
+
+    <style>
+        .recipe-hero {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 60px 0 40px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 40px;
+        }
+        
+        .recipe-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+        
+        .recipe-hero p {
+            font-size: 18px;
+            color: #78350f;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .ingredients-selector {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+        
+        .ingredient-item {
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .ingredient-item:hover {
+            border-color: #10b981;
+            transform: translateX(5px);
+        }
+        
+        .ingredient-item.selected {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+        
+        .ingredient-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .recipe-filters {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .filter-chip {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-chip:hover {
+            border-color: #10b981;
+            background: #d1fae5;
+        }
+        
+        .filter-chip.active {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+        
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #64748b;
+        }
+        
+        .no-results i {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .loading-spinner .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Include Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <h3>FET</h3>
+            </div>
+            <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h5 id="userName">Demo User</h5>
+                <p id="userEmail">demo@fet.com</p>
+            </div>
+        </div>
+        
+       <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">  
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+        <a href="recipe-finder.html" class="nav-item">  
+            <i class="fas fa-utensils"></i>
+            <span>Recipe Finder</span>
+        </a>
+
+        <a href="settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+        </a>
+        </nav>
+
+        <div class="sidebar-footer">
+             <a href="#" class="logout-btn" onclick="handleLogoutWithMessage();">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Top Navigation -->
+        <nav class="top-navbar">
+            <div class="navbar-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="page-title">Recipe Finder</h4>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-primary btn-add-food" onclick="window.location.href='dashboard.html'">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=Demo+User&background=10b981&color=fff" alt="User">
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            
+            <!-- Recipe Hero -->
+            <div class="recipe-hero">
+                <h1>🍳 Smart Recipe Finder</h1>
+                <p>Select ingredients that are expiring soon and we'll suggest delicious recipes to help reduce food waste!</p>
+                <div style="display: inline-flex; gap: 15px; font-size: 14px; color: #78350f;">
+                    <span><i class="fas fa-check-circle"></i> Save money</span>
+                    <span><i class="fas fa-leaf"></i> Reduce waste</span>
+                    <span><i class="fas fa-heart"></i> Eat healthy</span>
+                </div>
+            </div>
+
+            <!-- Ingredients Selector -->
+            <div class="ingredients-selector">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h5 style="margin: 0; color: #1e293b;">
+                        <i class="fas fa-shopping-basket" style="color: #10b981;"></i> 
+                        Select Ingredients
+                    </h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-success" onclick="selectAllIngredients()">
+                            <i class="fas fa-check-square"></i> Select All
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="clearAllIngredients()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="ingredientsList">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button 
+                        class="btn btn-lg" 
+                        onclick="findRecipes()"
+                        style="
+                            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                            color: white;
+                            padding: 15px 50px;
+                            border: none;
+                            border-radius: 15px;
+                            font-weight: 700;
+                            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+                        "
+                    >
+                        <i class="fas fa-magic"></i> Find Recipes (<span id="selectedCount">0</span> ingredients)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recipe Filters -->
+            <div class="recipe-filters" id="recipeFiltersSection" style="display: none;">
+                <h6 style="margin-bottom: 15px; color: #1e293b;">
+                    <i class="fas fa-filter"></i> Filter Recipes
+                </h6>
+                <div>
+                    <span class="filter-chip active" data-filter="all" onclick="filterRecipes('all', this)">
+                        <i class="fas fa-th"></i> All Recipes
+                    </span>
+                    <span class="filter-chip" data-filter="quick" onclick="filterRecipes('quick', this)">
+                        <i class="fas fa-clock"></i> Quick (≤20 mins)
+                    </span>
+                    <span class="filter-chip" data-filter="easy" onclick="filterRecipes('easy', this)">
+                        <i class="fas fa-smile"></i> Easy
+                    </span>
+                    <span class="filter-chip" data-filter="healthy" onclick="filterRecipes('healthy', this)">
+                        <i class="fas fa-heart"></i> Healthy
+                    </span>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p style="margin-top: 20px; color: #64748b; font-weight: 500;">
+                    Finding delicious recipes for you...
+                </p>
+            </div>
+
+            <!-- Recipe Results -->
+            <div id="recipeResultsSection" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: #1e293b; font-weight: 700;">
+                        <i class="fas fa-utensils" style="color: #10b981;"></i> 
+                        Recommended Recipes (<span id="recipeCount">0</span>)
+                    </h4>
+                </div>
+                <div class="recipe-grid" id="recipeGrid">
+                    <!-- Recipes will be populated here -->
+                </div>
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h4>No Recipes Found</h4>
+                <p>Try selecting different ingredients or add more items to your inventory.</p>
+                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
+                    <i class="fas fa-plus"></i> Add More Food Items
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/dashboard.js"></script>
+    <script src="js/recipe-finder.js"></script>
+    
+    <script>
+        // Initialize Recipe Finder Page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadIngredients();
+        });
+        
+        let selectedIngredients = [];
+        let allRecipes = [];
+        let filteredRecipes = [];
+        
+        function loadIngredients() {
+            const foodItems = JSON.parse(localStorage.getItem('fetFoodItems') || '[]');
+            const ingredientsList = document.getElementById('ingredientsList');
+            
+            // Filter expiring items (within 14 days)
+            const expiringItems = foodItems.filter(item => {
+                const daysLeft = calculateDaysRemaining(item.expiryDate);
+                return daysLeft > 0 && daysLeft <= 14;
+            }).sort((a, b) => {
+                return calculateDaysRemaining(a.expiryDate) - calculateDaysRemaining(b.expiryDate);
+            });
+            
+            if (expiringItems.length === 0) {
+                ingredientsList.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-info-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                        <h5>No Expiring Items</h5>
+                        <p>You don't have any food items expiring soon.</p>
+                        <a href="dashboard.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Food Items
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            ingredientsList.innerHTML = '';
+            expiringItems.forEach(item => {
+                const daysLeft = calculateDaysRemaining(item.expiryDate);
+                const urgency = daysLeft <= 3 ? 'danger' : daysLeft <= 7 ? 'warning' : 'success';
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'ingredient-item';
+                itemDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+                        <input 
+                            type="checkbox" 
+                            id="ing-${item.id}" 
+                            onchange="toggleIngredient(${item.id}, '${item.name}', this.checked)"
+                        >
+                        <label for="ing-${item.id}" style="cursor: pointer; flex: 1; margin: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <i class="${getCategoryIcon(item.category)}" style="color: #10b981; margin-right: 8px;"></i>
+                                    <strong style="color: #1e293b;">${item.name}</strong>
+                                    <span style="color: #64748b; font-size: 13px; margin-left: 10px;">
+                                        ${item.category}
+                                    </span>
+                                </div>
+                                <span class="badge bg-${urgency}" style="font-size: 12px;">
+                                    ${daysLeft} day${daysLeft !== 1 ? 's' : ''} left
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+                ingredientsList.appendChild(itemDiv);
+            });
+        }
+        
+        function toggleIngredient(id, name, checked) {
+            if (checked) {
+                selectedIngredients.push({ id, name });
+            } else {
+                selectedIngredients = selectedIngredients.filter(i => i.id !== id);
+            }
+            
+            // Update selected count
+            document.getElementById('selectedCount').textContent = selectedIngredients.length;
+            
+            // Update item styling
+            const itemDiv = document.querySelector(`#ing-${id}`).closest('.ingredient-item');
+            if (checked) {
+                itemDiv.classList.add('selected');
+            } else {
+                itemDiv.classList.remove('selected');
+            }
+        }
+        
+        function selectAllIngredients() {
+            document.querySelectorAll('#ingredientsList input[type="checkbox"]').forEach(cb => {
+                if (!cb.checked) cb.click();
+            });
+        }
+        
+        function clearAllIngredients() {
+            document.querySelectorAll('#ingredientsList input[type="checkbox"]').forEach(cb => {
+                if (cb.checked) cb.click();
+            });
+        }
+        
+        function findRecipes() {
+            if (selectedIngredients.length === 0) {
+                alert('Please select at least one ingredient!');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('recipeResultsSection').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+            
+            // Scroll to results
+            window.scrollTo({ top: 600, behavior: 'smooth' });
+            
+            // Simulate API call
+            setTimeout(() => {
+                const recipes = generateSmartRecipes(selectedIngredients);
+                displayRecipeResults(recipes);
+            }, 1500);
+        }
+        
+        function displayRecipeResults(recipes) {
+            document.getElementById('loadingSpinner').style.display = 'none';
+            
+            if (recipes.length === 0) {
+                document.getElementById('noResults').style.display = 'block';
+                return;
+            }
+            
+            allRecipes = recipes;
+            filteredRecipes = recipes;
+            
+            document.getElementById('recipeFiltersSection').style.display = 'block';
+            document.getElementById('recipeResultsSection').style.display = 'block';
+            document.getElementById('recipeCount').textContent = recipes.length;
+            
+            renderRecipes(recipes);
+        }
+        
+        function renderRecipes(recipes) {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = '';
+            
+            recipes.forEach(recipe => {
+                const card = createRecipeCard(recipe);
+                grid.appendChild(card);
+            });
+        }
+        
+        function filterRecipes(type, element) {
+            // Update active filter
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            // Apply filter
+            if (type === 'all') {
+                filteredRecipes = allRecipes;
+            } else if (type === 'quick') {
+                filteredRecipes = allRecipes.filter(r => parseInt(r.time) <= 20);
+            } else if (type === 'easy') {
+                filteredRecipes = allRecipes.filter(r => r.difficulty === 'Easy');
+            } else if (type === 'healthy') {
+                filteredRecipes = allRecipes.filter(r => parseInt(r.nutrition.calories) < 350);
+            }
+            
+            document.getElementById('recipeCount').textContent = filteredRecipes.length;
+            renderRecipes(filteredRecipes);
+        }
+    </script>
+</body>
+</html>

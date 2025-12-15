@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - FET | Food Expiry Tracker</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/auth.css">
+    <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/utils.js"></script>
+<script src="js/guest-mode.js"></script>
+<script src="js/auth.js"></script>
+</head>
+<body>
+    
+    <!-- Background Animation -->
+    <div class="auth-background">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+    </div>
+
+    <!-- Back to Home Button -->
+    <a href="index.html" class="btn-back-home">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+    <!-- Register Container -->
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-lg-10">
+                    <div class="auth-card">
+                        <div class="row g-0">
+                            
+                            <!-- Left Side - Illustration -->
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <div class="auth-illustration register-illustration">
+                                    <div class="illustration-content">
+                                        <div class="brand-logo">
+                                            <h2>FET</h2>
+                                        </div>
+                                        <h3 class="illustration-title">Start Your Journey!</h3>
+                                        <p class="illustration-subtitle">
+                                            Join us today and take control of your food inventory. Reduce waste, save money!
+                                        </p>
+                                        
+                                        <!-- Benefits List -->
+                                        <div class="benefits-list">
+                                            <div class="benefit-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Track unlimited food items</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Smart expiry notifications</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Reduce food waste up to 75%</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Free forever, no credit card</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Animated Food Icons -->
+                                        <div class="food-icons">
+                                            <div class="food-icon icon-1">
+                                                <i class="fas fa-apple-alt"></i>
+                                            </div>
+                                            <div class="food-icon icon-2">
+                                                <i class="fas fa-carrot"></i>
+                                            </div>
+                                            <div class="food-icon icon-3">
+                                                <i class="fas fa-cheese"></i>
+                                            </div>
+                                            <div class="food-icon icon-4">
+                                                <i class="fas fa-drumstick-bite"></i>
+                                            </div>
+                                            <div class="food-icon icon-5">
+                                                <i class="fas fa-bread-slice"></i>
+                                            </div>
+                                            <div class="food-icon icon-6">
+                                                <i class="fas fa-fish"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Side - Register Form -->
+                            <div class="col-lg-6">
+                                <div class="auth-form-wrapper">
+                                    
+                                    <!-- Mobile Logo -->
+                                    <div class="mobile-logo d-lg-none text-center mb-4">
+                                        <i class="fas fa-apple-alt"></i>
+                                        <h2>FET</h2>
+                                    </div>
+
+                                    <div class="auth-header">
+                                        <h1 class="auth-title">Create Account</h1>
+                                        <p class="auth-subtitle">Sign up to get started with FET</p>
+                                    </div>
+
+                                    <!-- Alert Messages (Hidden by default) -->
+                                    <div id="alertMessage" class="alert alert-dismissible fade d-none" role="alert">
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                        <span id="alertText"></span>
+                                        <button type="button" class="btn-close" onclick="closeAlert()"></button>
+                                    </div>
+
+                                    <!-- Register Form -->
+                                    <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+                                        
+                                        <!-- Full Name Input -->
+                                        <div class="form-group">
+                                            <label for="fullname" class="form-label">
+                                                <i class="fas fa-user"></i> Full Name
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="fullname" 
+                                                    name="fullname"
+                                                    placeholder="Enter your full name"
+                                                    required
+                                                    minlength="3"
+                                                >
+                                                <span class="input-icon">
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Name must be at least 3 characters long.
+                                            </div>
+                                        </div>
+
+                                        <!-- Email Input -->
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">
+                                                <i class="fas fa-envelope"></i> Email Address
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input 
+                                                    type="email" 
+                                                    class="form-control" 
+                                                    id="email" 
+                                                    name="email"
+                                                    placeholder="Enter your email"
+                                                    required
+                                                >
+                                                <span class="input-icon">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please enter a valid email address.
+                                            </div>
+                                        </div>
+
+                                        <!-- Password Input -->
+                                        <div class="form-group">
+                                            <label for="password" class="form-label">
+                                                <i class="fas fa-lock"></i> Password
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input 
+                                                    type="password" 
+                                                    class="form-control" 
+                                                    id="password" 
+                                                    name="password"
+                                                    placeholder="Create a password"
+                                                    required
+                                                    minlength="6"
+                                                >
+                                                <span class="input-icon">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <!-- Password Strength Indicator -->
+                                            <div class="password-strength">
+                                                <div class="strength-bar">
+                                                    <div class="strength-fill" id="strengthFill"></div>
+                                                </div>
+                                                <span class="strength-text" id="strengthText">Weak</span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Password must be at least 6 characters long.
+                                            </div>
+                                        </div>
+
+                                        <!-- Confirm Password Input -->
+                                        <div class="form-group">
+                                            <label for="confirmPassword" class="form-label">
+                                                <i class="fas fa-lock"></i> Confirm Password
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <input 
+                                                    type="password" 
+                                                    class="form-control" 
+                                                    id="confirmPassword" 
+                                                    name="confirmPassword"
+                                                    placeholder="Confirm your password"
+                                                    required
+                                                    minlength="6"
+                                                >
+                                                <span class="input-icon">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Passwords do not match.
+                                            </div>
+                                        </div>
+
+                                        <!-- Terms & Conditions -->
+                                        <div class="form-check form-group">
+                                            <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                            <label class="form-check-label" for="terms">
+                                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                You must agree to the terms and conditions.
+                                            </div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <button type="submit" class="btn btn-primary btn-auth" id="registerBtn">
+                                            <span class="btn-text">
+                                                <i class="fas fa-user-plus"></i> Create Account
+                                            </span>
+                                            <span class="btn-loader d-none">
+                                                <i class="fas fa-spinner fa-spin"></i> Creating account...
+                                            </span>
+                                        </button>
+
+                                        <!-- Divider -->
+                                        <div class="divider">
+                                            <span>or sign up with</span>
+                                        </div>
+
+                                        <!-- Social Login Buttons -->
+                                        <div class="social-login">
+                                            <button type="button" class="btn btn-social btn-google" onclick="socialLogin('google')">
+                                                <i class="fab fa-google"></i>
+                                                <span>Google</span>
+                                            </button>
+                                            <button type="button" class="btn btn-social btn-facebook" onclick="socialLogin('facebook')">
+                                                <i class="fab fa-facebook-f"></i>
+                                                <span>Facebook</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Sign In Link -->
+                                        <!-- Sign In Link -->
+                                        <div class="auth-footer">
+                                            <p>Already have an account? <a href="login.html" class="auth-link">Sign In</a></p>
+                                            <p style="margin-top: 10px;">Or <button onclick="activateGuestMode()" style="background: none; border: none; color: #10b981; font-weight: 600; cursor: pointer; text-decoration: underline;">try as guest</button></p>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/auth.js"></script>
+</body>
+</html>

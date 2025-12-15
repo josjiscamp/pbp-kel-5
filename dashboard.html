@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FET | Food Expiry Tracker</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- Di bagian bawah sebelum </body> -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- LOAD IN THIS ORDER -->
+    <script src="js/utils.js"></script>          <!-- 1. Helper functions -->
+    <script src="js/dashboard.js"></script>      <!-- 2. Dashboard core -->
+    <script src="js/recipe-finder.js"></script>  <!-- 3. Recipe system -->
+    <script src="js/notifications.js"></script>  <!-- 4. Notifications (optional) -->
+    <script src="js/guest-mode.js"></script>
+    <script src="js/browser-notifications.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <h3>FET</h3>
+            </div>
+            <button class="sidebar-toggle d-lg-none" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h5 id="userName">Demo User</h5>
+                <p id="userEmail">demo@fet.com</p>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">  
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+
+        <a href="recipe-finder.html" class="nav-item">  
+            <i class="fas fa-utensils"></i>
+            <span>Recipe Finder</span>
+        </a>
+
+        <a href="settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+        </a>
+
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn" onclick="handleLogoutWithMessage();">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Top Navigation -->
+        <nav class="top-navbar">
+            <div class="navbar-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="page-title">Dashboard</h4>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-primary btn-add-food" onclick="openAddFoodModal()">
+                    <i class="fas fa-plus"></i> Add Food
+                </button>
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">3</span>
+                </div>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=Demo+User&background=10b981&color=fff" alt="User">
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card card-green">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="freshCount">12</h3>
+                            <p>Fresh Items</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card card-yellow">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="expiringCount">5</h3>
+                            <p>Expiring Soon</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card card-red">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="expiredCount">2</h3>
+                            <p>Expired</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card card-blue">
+                        <div class="stat-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCount">19</h3>
+                            <p>Total Items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recipe Suggestion Alert (Show when items expiring) -->
+            <div class="alert alert-warning alert-recipe d-none" id="recipeSuggestionAlert">
+                <div class="alert-content">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <h5>Smart Recipe Suggestion Available!</h5>
+                        <p>You have <strong id="expiringItemsCount">5</strong> items expiring soon. Find recipes to use them up!</p>
+                    </div>
+                </div>
+                <button class="btn btn-warning" onclick="openRecipeModal()">
+                    <i class="fas fa-utensils"></i> Find Recipes
+                </button>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <div class="filter-section">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 mb-3 mb-lg-0">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search food items..." onkeyup="filterFoods()">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" onclick="filterByStatus('all')">
+                                <i class="fas fa-th"></i> All
+                            </button>
+                            <button class="filter-btn filter-green" onclick="filterByStatus('fresh')">
+                                <i class="fas fa-check-circle"></i> Fresh
+                            </button>
+                            <button class="filter-btn filter-yellow" onclick="filterByStatus('expiring')">
+                                <i class="fas fa-exclamation-triangle"></i> Expiring
+                            </button>
+                            <button class="filter-btn filter-red" onclick="filterByStatus('expired')">
+                                <i class="fas fa-times-circle"></i> Expired
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Items Grid -->
+            <div class="food-grid" id="foodGrid">
+                <!-- Food cards will be generated dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state d-none" id="emptyState">
+                <i class="fas fa-inbox"></i>
+                <h3>No Food Items Yet</h3>
+                <p>Start tracking your food by adding your first item!</p>
+                <button class="btn btn-primary" onclick="openAddFoodModal()">
+                    <i class="fas fa-plus"></i> Add Your First Food
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add Food Modal -->
+    <div class="modal fade" id="addFoodModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus-circle"></i> Add New Food Item
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFoodForm" onsubmit="handleAddFood(event)">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-tag"></i> Food Name
+                            </label>
+                            <input type="text" class="form-control" id="foodName" required placeholder="e.g., Chicken Breast">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-layer-group"></i> Category
+                            </label>
+                            <select class="form-select" id="foodCategory" required>
+                                <option value="">Select category...</option>
+                                <option value="Vegetables">🥕 Vegetables</option>
+                                <option value="Fruits">🍎 Fruits</option>
+                                <option value="Dairy">🧀 Dairy</option>
+                                <option value="Meat">🍗 Meat</option>
+                                <option value="Seafood">🐟 Seafood</option>
+                                <option value="Grains">🌾 Grains</option>
+                                <option value="Beverages">🥤 Beverages</option>
+                                <option value="Others">📦 Others</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-alt"></i> Expiry Date
+                            </label>
+                            <input type="date" class="form-control" id="expiryDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-image"></i> Food Image (Optional)
+                            </label>
+                            <input type="file" class="form-control" id="foodImage" accept="image/*">
+                            <small class="text-muted">Max 2MB</small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Food
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Finder Modal -->
+    <div class="modal fade" id="recipeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-utensils"></i> Recipe Suggestions
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <!-- Selected Ingredients -->
+                    <div class="selected-ingredients mb-4">
+                        <h6>Items Expiring Soon:</h6>
+                        <div class="ingredient-chips" id="ingredientChips">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="recipe-loading d-none" id="recipeLoading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p>Finding delicious recipes for you...</p>
+                    </div>
+
+                    <!-- Recipe Results -->
+                    <div class="recipe-results" id="recipeResults">
+                        <!-- Will be populated with recipes -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Food Modal -->
+    <div class="modal fade" id="editFoodModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit"></i> Edit Food Item
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFoodForm" onsubmit="handleEditFood(event)">
+                        <input type="hidden" id="editFoodId">
+                        <div class="mb-3">
+                            <label class="form-label">Food Name</label>
+                            <input type="text" class="form-control" id="editFoodName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="editFoodCategory" required>
+                                <option value="Vegetables">🥕 Vegetables</option>
+                                <option value="Fruits">🍎 Fruits</option>
+                                <option value="Dairy">🧀 Dairy</option>
+                                <option value="Meat">🍗 Meat</option>
+                                <option value="Seafood">🐟 Seafood</option>
+                                <option value="Grains">🌾 Grains</option>
+                                <option value="Beverages">🥤 Beverages</option>
+                                <option value="Others">📦 Others</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="editExpiryDate" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Update Food
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="deleteFoodName"></strong>?</p>
+                    <p class="text-muted">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

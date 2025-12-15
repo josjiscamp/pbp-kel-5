@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FET - Food Expiry Tracker | Stop Food Waste, Start Smart Living</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="#" data-aos="fade-right">
+                <i></i> FET
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link btn-nav-login" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link btn-nav-signup" href="register.html">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            Stop Food Waste,<br>
+                            <span class="gradient-text">Start Smart Living</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Track your food expiry dates effortlessly. Get smart notifications, 
+                            reduce waste, and save money with FET - your intelligent food management companion.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="register.html" class="btn btn-primary btn-lg btn-hero">
+                                <i class="fas fa-rocket"></i> Get Started Free
+                            </a>
+                            <button onclick="activateGuestMode()" class="btn btn-outline-light btn-lg btn-hero">
+                            <i class="fas fa-user"></i> Try as Guest
+                        </button>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <h3 class="stat-number" data-count="1000">0</h3>
+                                <p class="stat-label">Foods Tracked</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 class="stat-number" data-count="500">0</h3>
+                                <p class="stat-label">Active Users</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 class="stat-number" data-count="75">0</h3>
+                                <p class="stat-label">Waste Reduced %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="hero-illustration">
+                        <div class="floating-card card-green">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Fresh & Safe</span>
+                        </div>
+                        <div class="floating-card card-yellow">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Expiring Soon</span>
+                        </div>
+                        <div class="floating-card card-red">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Expired</span>
+                        </div>
+                        <div class="phone-mockup">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header text-center" data-aos="fade-up">
+                <h2 class="section-title">Powerful Features</h2>
+                <p class="section-subtitle">Everything you need to manage your food inventory smartly</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 class="feature-title">Smart Notifications</h3>
+                        <p class="feature-description">
+                            Get visual alerts with color-coded status. Green for fresh, yellow for expiring soon, red for expired items.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3 class="feature-title">Auto Date Tracking</h3>
+                        <p class="feature-description">
+                            Automatically calculates remaining days until expiry. Never miss a deadline and reduce food waste.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="feature-title">Category Management</h3>
+                        <p class="feature-description">
+                            Organize by categories like fruits, vegetables, dairy, meat. Filter and find items instantly.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="feature-title">Photo Upload</h3>
+                        <p class="feature-description">
+                            Add photos of your food items for easy visual identification and better tracking.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Fully Responsive</h3>
+                        <p class="feature-description">
+                            Access from any device - desktop, tablet, or mobile. Your data syncs everywhere.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Secure & Private</h3>
+                        <p class="feature-description">
+                            Your data is encrypted and secure. Only you have access to your food inventory.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-section">
+        <div class="container">
+            <div class="section-header text-center" data-aos="fade-up">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Simple, fast, and effective in just 3 steps</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-content">
+                        <div class="timeline-number">1</div>
+                        <h3 class="timeline-title">Add Your Food Items</h3>
+                        <p class="timeline-description">
+                            Simply input your food name, category, expiry date, and optionally upload a photo. Takes less than 30 seconds!
+                        </p>
+                    </div>
+                    <div class="timeline-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                    <div class="timeline-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-number">2</div>
+                        <h3 class="timeline-title">Track Automatically</h3>
+                        <p class="timeline-description">
+                            FET automatically calculates remaining days and updates status colors. Green, yellow, or red - you'll know at a glance!
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-content">
+                        <div class="timeline-number">3</div>
+                        <h3 class="timeline-title">Take Action & Save</h3>
+                        <p class="timeline-description">
+                            Get visual alerts when food is expiring soon. Plan meals accordingly, reduce waste, and save money!
+                        </p>
+                    </div>
+                    <div class="timeline-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/CTA Section -->
+    <section id="about" class="cta-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h2 class="cta-title">Ready to Transform Your Kitchen?</h2>
+                    <p class="cta-description">
+                        Join hundreds of smart users who are already saving money and reducing food waste with FET. 
+                        Start your journey to smarter food management today - it's completely free!
+                    </p>
+                    <ul class="cta-checklist">
+                        <li><i class="fas fa-check-circle"></i> No credit card required</li>
+                        <li><i class="fas fa-check-circle"></i> Setup in less than 2 minutes</li>
+                        <li><i class="fas fa-check-circle"></i> Works on all devices</li>
+                        <li><i class="fas fa-check-circle"></i> Free forever</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-primary btn-lg btn-cta">
+                        <i class="fas fa-user-plus"></i> Create Free Account
+                    </a>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="cta-stats-card">
+                        <div class="stat-box">
+                            <i class="fas fa-leaf"></i>
+                            <h3>Reduce Waste</h3>
+                            <p>Up to 75% less food waste in your household</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-piggy-bank"></i>
+                            <h3>Save Money</h3>
+                            <p>Average savings of $200/month per family</p>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fas fa-clock"></i>
+                            <h3>Save Time</h3>
+                            <p>Spend less time worrying about expiry dates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-brand"><i></i> FET</h5>
+                    <p class="footer-text">Stop Food Waste, Start Smart Living</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Product</h6>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Company</h6>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Support</h6>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Get Started</h6>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Sign Up</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FET - Food Expiry Tracker.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+   <script src="js/utils.js"></script>
+    <script src="js/guest-mode.js"></script>
+    <script src="js/landing.js"></script>
+</body>
+</html>
